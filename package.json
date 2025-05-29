@@ -1,0 +1,22 @@
+{
+  "name": "experiments",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@9.5.0",
+  "scripts": {
+    "build": "node --import tsx scripts/lite_index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^22.5.0",
+    "esbuild": "^0.23.1",
+    "js-yaml": "^4.1.0",
+    "tsx": "^4.17.0",
+    "typescript": "^5.5.4"
+  }
+}
