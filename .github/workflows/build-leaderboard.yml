@@ -1,0 +1,44 @@
+name: Build
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    permissions:
+      contents: write
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 1
+
+    - name: Install pnpm
+      uses: pnpm/action-setup@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        cache: pnpm
+
+    - name: Install dependencies
+      run: pnpm install
+
+    - name: Build
+      run: pnpm run build
+
+    - name: Deploy
+      if: ${{ github.repository == 'lhxxhxh/exp_secbench' && github.ref == 'refs/heads/main' }}
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        publish_branch: dist
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: dist
+        force_orphan: true
+        enable_jekyll: true
+        commit_message: '[skip ci] deploy'
+        
