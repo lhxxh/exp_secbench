@@ -62,8 +62,8 @@ for (const [langKey, langValue] of Object.entries(index)) {
         // const strict_report = strict_filecontent.trim().split('\n').map(line => JSON.parse(line))
         const filecontent = await fs.readFile(`${basePath}/${path}/report.jsonl`, 'utf8')
         const report = filecontent.trim().split('\n').map(line => JSON.parse(line))
-        const urlLogs = `${GITHUB_URL}/${basePath}/${path}`
-        const urlTrajs = `${GITHUB_URL}/${basePath}/${path}`
+        const urlLogs = `${GITHUB_URL}/${basePath}/${path}/logs`
+        const urlTrajs = `${GITHUB_URL}/${basePath}/${path}/trajs`
         const hasLogs = await fs.access(`${basePath}/${path}/logs`).then(() => true, () => false)
         const hasTrajs = await fs.access(`${basePath}/${path}/trajs`).then(() => true, () => false)
         const hasReadme = await fs.access(`${basePath}/${path}/README.md`).then(() => true, () => false)
