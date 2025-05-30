@@ -1,5 +1,7 @@
-all:
-  name: All
-  data:
-    verified:
-      name: Verified
+Patch:
+  tabName: Patch
+  displayName: Vulnerability Patching
+  
+PoC:
+  tabName: PoC
+  displayName: PoC Generation
