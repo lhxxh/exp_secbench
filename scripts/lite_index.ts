@@ -46,7 +46,6 @@ for (const [langKey, langValue] of Object.entries(index)) {
   leaderboard.push(lang)
 
   const basePath = `evaluation/${langValue.tabName}`
-  console.log(`${basePath}`)
   const dirents = await fs.readdir(basePath, { withFileTypes: true })
 
   const results = await Promise.allSettled(
@@ -55,12 +54,14 @@ for (const [langKey, langValue] of Object.entries(index)) {
       .map<Promise<Result>>(async (dirent) => {
         const path = `${dirent.name}`
         const metadata = yaml.load(await fs.readFile(`${basePath}/${path}/metadata.yaml`, 'utf8')) as Pick<Result, 'oss' | 'verified' | 'name' | 'site' | 'orgIcon' | 'date'>
-        const generous_filecontent = await fs.readFile(`${basePath}/${path}/report_generous.jsonl`, 'utf8')
-        const generous_report = generous_filecontent.trim().split('\n').map(line => JSON.parse(line))
-        const medium_filecontent = await fs.readFile(`${basePath}/${path}/report_medium.jsonl`, 'utf8')
-        const medium_report = medium_filecontent.trim().split('\n').map(line => JSON.parse(line))
-        const strict_filecontent = await fs.readFile(`${basePath}/${path}/report_strict.jsonl`, 'utf8')
-        const strict_report = strict_filecontent.trim().split('\n').map(line => JSON.parse(line))
+        // const generous_filecontent = await fs.readFile(`${basePath}/${path}/report_generous.jsonl`, 'utf8')
+        // const generous_report = generous_filecontent.trim().split('\n').map(line => JSON.parse(line))
+        // const medium_filecontent = await fs.readFile(`${basePath}/${path}/report_medium.jsonl`, 'utf8')
+        // const medium_report = medium_filecontent.trim().split('\n').map(line => JSON.parse(line))
+        // const strict_filecontent = await fs.readFile(`${basePath}/${path}/report_strict.jsonl`, 'utf8')
+        // const strict_report = strict_filecontent.trim().split('\n').map(line => JSON.parse(line))
+        const filecontent = await fs.readFile(`${basePath}/${path}/report.jsonl`, 'utf8')
+        const report = filecontent.trim().split('\n').map(line => JSON.parse(line))
         const urlLogs = `${GITHUB_URL}/${basePath}/${path}`
         const urlTrajs = `${GITHUB_URL}/${basePath}/${path}`
         const hasLogs = await fs.access(`${basePath}/${path}/logs`).then(() => true, () => false)
@@ -76,11 +77,11 @@ for (const [langKey, langValue] of Object.entries(index)) {
           date: metadata.date instanceof Date
           ? metadata.date.toISOString().slice(0, 10)
           : String(metadata.date),
-          resolvedRate: medium_report.filter(item => item.success).length / medium_report.length,
-          resolved: medium_report.filter(item => item.success).length,
-          resolvedEasy: generous_report.filter(item => item.success).length,
-          resolvedMedium: medium_report.filter(item => item.success).length,
-          resolvedHard: strict_report.filter(item => item.success).length,
+          resolvedRate: report.filter(item => item.success).length / report.length,
+          resolved: report.filter(item => item.success).length,
+          resolvedEasy: report.filter(item => item.success).length,
+          resolvedMedium: report.filter(item => item.success).length,
+          resolvedHard: report.filter(item => item.success).length,
           path: `${basePath}/${path}`,
           logs: hasLogs ? urlLogs : undefined,
           trajs: hasTrajs ? urlTrajs : undefined,
