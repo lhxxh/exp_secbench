@@ -1,4 +1,4 @@
-# SecBench Experiment
+# Experiment
 
 ## Setup Instructions
 
